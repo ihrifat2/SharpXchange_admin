@@ -44,7 +44,7 @@ if (!empty($tstmonid)) {
 } else {
     echo "<script>javascript:document.location='error.html'</script>";
 }
-if (empty($username) || empty($tstmn_txt) || empty($view) || empty($status)) {
+if (empty($username) || empty($tstmn_txt) || empty($status)) {
     echo "<script>javascript:document.location='error.html'</script>";
 }
 
