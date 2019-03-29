@@ -197,11 +197,11 @@ if (isset($_POST['submitBtn'])) {
                                     <form method="post">
                                         <div class="form-group">
                                             <label>Notice</label>
-                                            <input type="text" class="form-control" name="notice1" placeholder="Notice1" value="<?php echo $ntce1; ?>">
+                                            <input type="text" class="form-control" name="notice1" placeholder="Notice" value="<?php echo $ntce1; ?>">
                                         </div>
                                         <div class="form-group">
-                                            <label>Notice</label>
-                                            <input type="text" class="form-control" name="notice2" placeholder="Notice2" value="<?php echo $ntce2; ?>">
+                                            <label>New Update</label>
+                                            <input type="text" class="form-control" name="notice2" placeholder="New Update" value="<?php echo $ntce2; ?>">
                                         </div>
                                         <input type="hidden" name="csrf_token" value="<?php echo tokenField(); ?>">
                                         <button type="submit" class="btn btn-success pull-right" name="submitBtn">Submit</button>
