@@ -11,11 +11,11 @@
 <?php
 
 session_start();
-require_once 'xsrf.php';
+require 'xsrf.php';
 require "dbconnect.php";
 
 if (isset($_SESSION['admin_login_session'])) {
-	header("Location: /admin/index.php");
+	header("Location: index.php");
     // echo "<script>javascript:document.location='/admin/sign_in.php'</script>";
 }
 
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSub'])) {
 
             if ($check) {
                 $_SESSION['admin_login_session'] = $uname;
-                echo "<script>javascript:document.location='/index.php'</script>";
+                echo "<script>javascript:document.location='index.php'</script>";
             }else{
                 echo '<div id="snackbar">Username or Password Invalid.</div>';
                 echo "<script>snackbarMessage()</script>";
