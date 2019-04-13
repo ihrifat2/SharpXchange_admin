@@ -312,7 +312,7 @@ if (isset($_POST['rateBtn'])) {
                                     <div class="card-icon">
                                         <i class="fa fa-dollar"></i>
                                     </div>
-                                    <p class="card-category">Successful Payout</p>
+                                    <p class="card-category">Payout</p>
                                     <h3 class="card-title"><?php echo getTotalsuscessExchng(); ?></h3>
                                 </div>
                                 <div class="card-footer">
