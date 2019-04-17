@@ -48,9 +48,9 @@ if (isset($_POST['reserveUpdateBtn'])) {
         echo '<div id="snackbar">CSRF FAILED!</div>';
         echo "<script>snackbarMessage()</script>";
     } else {
-        $sqlQuery       = "UPDATE `tbl_reserve_list` SET `amount`='$reserveAmount',`username`='$username',`update_date`='$time' WHERE `reserve_id` = '$reserveGateway'";
-        $result         = mysqli_query($dbconnect, $sqlQuery);
-        if ($result) {
+        $sqlQueryRU     = "UPDATE `tbl_reserve_list` SET `amount`='$reserveAmount',`username`='$username',`update_date`='$time' WHERE `reserve_id` = '$reserveGateway'";
+        $resultRU       = mysqli_query($dbconnect, $sqlQueryRU);
+        if ($resultRU) {
             echo '<div id="snackbar">Reserve List Updated.</div>';
             echo "<script>snackbarMessage()</script>";
         } else {
@@ -61,12 +61,34 @@ if (isset($_POST['reserveUpdateBtn'])) {
 }
 
 if (isset($_POST['rateBtn'])) {
-    $exchngGT   = $_POST['exchangeGw'];
-    $rateFrom   = $_POST['rateFrom'];
-    $rateTo     = $_POST['rateTo'];
+    $exchangeGw = $_POST['exchangeGw'];
+    $rateBuy    = $_POST['rateFrom'];
+    $rateSell   = $_POST['rateTo'];
+    $status     = checkToken( $_REQUEST[ 'csrf_token' ], $_SESSION[ 'session_token' ]);
+
+    if (!$status) {
+        echo '<div id="snackbar">CSRF FAILED!</div>';
+        echo "<script>snackbarMessage()</script>";
+    } else {
+        // echo $exchangeGw . " : " . $rateBuy . " : " . $rateSell . " : " . $status;
+        if (findGateway($exchangeGw)) {
+            $sqlQueryRC     = "UPDATE `tbl_gateway_info` SET `username`='$countUname',`we_buy`='$rateBuy',`we_sell`='$rateSell',`date`='$time' WHERE `gateway_id` = '$exchangeGw'";
+            $resultRC       = mysqli_query($dbconnect, $sqlQueryRC);
+            if ($resultRC) {
+                echo '<div id="snackbar">Exchange Rate Updated.</div>';
+                echo "<script>snackbarMessage()</script>";
+            } else {
+                echo '<div id="snackbar">Exchange Rate Failed To Updated.</div>';
+                echo "<script>snackbarMessage()</script>";
+            }
+        } else {
+            echo '<div id="snackbar">Gateway Not Found!</div>';
+            echo "<script>snackbarMessage()</script>";
+        }
+    }
 
 }
-
+generateSessionToken();
 ?>
 
 <body class="dark-edition">
@@ -423,7 +445,7 @@ if (isset($_POST['rateBtn'])) {
                                     <h4 class="card-title">Quickly update exchange rate</h4>
                                 </div>
                                 <div class="card-body table-responsive">
-                                    <form action="">
+                                    <form action="" method="post">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group bmd-form-group">
@@ -455,6 +477,7 @@ if (isset($_POST['rateBtn'])) {
                                                 </div>
                                             </div>
                                         </div>
+                                        <input type="hidden" name="csrf_token" value="<?php echo tokenField(); ?>">
                                         <button type="submit" class="btn btn-primary pull-right" name="rateBtn">Update</button>
                                         <div class="clearfix"></div>
                                     </form>
