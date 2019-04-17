@@ -167,7 +167,6 @@ if (isset($_GET['notifyid'])) {
                                             <th>From</th>
                                             <th>To</th>
                                             <th>We receive</th>
-                                            <th>We send</th>
                                             <th>Phone Number</th>
                                             <th>Gateway Address</th>
                                             <th>Status</th>
@@ -188,7 +187,7 @@ if (isset($_GET['notifyid'])) {
                                                 // Pagination End
 
                                                 $gwInfodata = array();
-                                                $gwInfoquery = "SELECT `exchange_id`, `gateway_sell`, `gateway_recieve`, `amount_sell`, `amount_recieve`, `phone_number`, `gateway_info_address`, `status`, `date` FROM {$statement} ORDER BY `exchange_id` DESC LIMIT {$startpoint} , {$limit}";
+                                                $gwInfoquery = "SELECT `exchange_id`, `gateway_sell`, `gateway_recieve`, `amount_sell`, `phone_number`, `gateway_info_address`, `status`, `date` FROM {$statement} ORDER BY `exchange_id` DESC LIMIT {$startpoint} , {$limit}";
                                                 $gwInforesult = $dbconnect->query($gwInfoquery);
                                                 if ($gwInforesult) {
                                                     while ($gwInforows = $gwInforesult->fetch_array(MYSQLI_ASSOC)) {
@@ -201,13 +200,12 @@ if (isset($_GET['notifyid'])) {
                                                         <tr>
                                                             <td>' . $gwInfoRow['gateway_sell'] . '</td>
                                                             <td>' . $gwInfoRow['gateway_recieve'] . '</td>
-                                                            <td>' . $gwInfoRow['amount_sell'] . '</td>
-                                                            <td>' . $gwInfoRow['amount_recieve'] . '</td>
+                                                            <td>' . $gwInfoRow['amount_sell'] . bdtOrUsbByGTName($gwInfoRow['gateway_sell']) . '</td>
                                                             <td>' . $gwInfoRow['phone_number'] . '</td>
                                                             <td>' . $gwInfoRow['gateway_info_address'] . '</td>
                                                             <td>' . getbadgefromStatus($gwInfoRow['status']) . '</td>
                                                             <td>' . getDateFormat($gwInfoRow['date']) . '</td>
-                                                            <td><a class="btnn btn-outline-sxc" href="explore.php?exid='.encode($gwInfoRow['exchange_id']).'">Update</a></td>
+                                                            <td><a class="btnn btn-outline-sxc" href="explore.php?exid='.encode($gwInfoRow['exchange_id']).'"><i class="fa fa-pencil"></i></a></td>
                                                         </tr>
                                                     ';
                                                 }
