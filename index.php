@@ -15,6 +15,28 @@
     <script src="assets/js/jquery-3.3.1.min.js"></script>
     <script src="assets/js/sxcdashboard.js"></script>
     <script src="assets/js/sxcadmin.js"></script>
+    <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
+    <style type="text/css">
+        .invisible {
+            display: none;
+            visibility: hidden;
+        }
+    </style>
+    <script>
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('c0d39fd7bd9c14eb2b6a', {
+        cluster: 'ap2',
+        forceTLS: true
+    });
+
+    var channel = pusher.subscribe('sharpxchange');
+    channel.bind('notification', function(data) {
+        // alert(JSON.stringify(data));
+        // console.log(data['message']);
+        document.getElementById('audio').innerHTML = '<audio controls autoplay><source src="https://asset.sharpxchange.com/assets/audio/tone.mp3" type="audio/mpeg"></audio>';
+    });
+    </script>
 
 </head>
 <?php
@@ -92,6 +114,7 @@ generateSessionToken();
 ?>
 
 <body class="dark-edition">
+    <div id="audio" class="invisible"></div>
     <div class="wrapper ">
         <div class="sidebar" data-color="orange" data-background-color="black">
             <div class="sidebar-wrapper">
@@ -387,7 +410,7 @@ generateSessionToken();
                                                                     <td>' . $adminExchngRow['amount_recieve'] . '</td>
                                                                     <td>' . $adminExchngRow['gateway_info_address'] . '</td>
                                                                     <td>' . $adminExchngRow['status'] . '</td>
-                                                                    <td><a href="explore.php?exid='.$adminExchngRow['exchange_id'].'">explore</a></td>
+                                                                    <td><a class="btn btn-danger" href="explore.php?exid='.$adminExchngRow['exchange_id'].'">explore</a></td>
                                                                 </tr>
                                                             ';
                                                         }
