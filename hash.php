@@ -1,12 +1,4 @@
-<?php 
-
-function encryptTransID($string) {
-    $randomNumber = rand(10,99);
-    $encoded        = base64_encode($string);
-    $modencd        = substr($encoded, 0, -2);
-    $hash           = "TransID" . $modencd . $randomNumber;
-    return $hash;
-}
+<?php
 
 function decrypt($value){
     $value = $value . "==";
