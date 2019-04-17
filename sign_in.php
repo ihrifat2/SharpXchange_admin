@@ -2,11 +2,13 @@
 <html>
 <head>
     <title>Login</title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/sxcadmin.css">
-    <link rel="Shortcut Icon" href="assets/icon/icon.png" type="icon"/>
-    <script src="assets/js/jquery-3.3.1.min.js"></script>
-    <script src="assets/js/sxcadmin.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://asset.sharpxchange.com/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://asset.sharpxchange.com/assets/css/style.css">
+    <link rel="stylesheet" href="https://asset.sharpxchange.com/assets/css/sxcadmin.css">
+    <script src="https://asset.sharpxchange.com/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="https://asset.sharpxchange.com/assets/js/sxcadmin.js"></script>
 </head>
 <?php
 
@@ -63,26 +65,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSub'])) {
 generateSessionToken();
 ?>
 <body>
-    <div class="container mt-4">
-        <div class="row justify-content-md-center">
-            <div class="col-md-8">
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <div class="form-group">
-                        <input class="form-control" type="text" name="uname" placeholder="Username">
+    <div class="container login-panel-row">
+        <div class="row justify-content-md-center login-panel-container">
+            <div class="col-md-8 login-panel-body">
+                <div class="header" style="background-image: url(assets/img/bg-01.jpg);">
+                </div>
+
+                <form class="login-panel-form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                    <div class="form-group row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control-plaintext" name="uname" placeholder="Enter username">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input class="form-control" type="password" name="passwd" placeholder="Password">
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="passwd" placeholder="Enter password">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="hidden" name="csrf_token" value="<?php echo tokenField(); ?>">
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <input type="hidden" name="csrf_token" value="<?php echo tokenField(); ?>">
+                            <button class="btn btn-outline-success" type="submit" name="btnSub">
+                                Login
+                            </button>
+                        </div>
                     </div>
-                    <button class="btn btn-info" type="submit" name="btnSub">submit</button>
+                    <p id="error"></p>
+                    <p id="success"></p>
                 </form>
-                <p id="error"></p>
-                <p id="success"></p>
             </div>
         </div>
     </div>
-    <script src="assets/js/bootstrap.min.js"></script>
 </body>
 </html>
