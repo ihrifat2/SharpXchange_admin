@@ -15,13 +15,13 @@
     <script src="assets/js/jquery-3.3.1.min.js"></script>
     <script src="assets/js/sxcdashboard.js"></script>
     <script src="assets/js/sxcadmin.js"></script>
-    <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     <style type="text/css">
         .invisible {
             display: none;
             visibility: hidden;
         }
     </style>
+    <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     <script>
     Pusher.logToConsole = true;
 
@@ -34,7 +34,9 @@
     channel.bind('notification', function(data) {
         // alert(JSON.stringify(data));
         // console.log(data['message']);
-        document.getElementById('audio').innerHTML = '<audio controls autoplay><source src="https://asset.sharpxchange.com/assets/audio/tone.mp3" type="audio/mpeg"></audio>';
+        if (data['message'] == 1) {
+            document.getElementById('audio').innerHTML = '<audio controls autoplay><source src="https://asset.sharpxchange.com/assets/audio/tone.mp3" type="audio/mpeg"></audio>';
+        }
     });
     </script>
 
