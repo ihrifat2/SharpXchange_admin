@@ -292,7 +292,7 @@ if (isset($_POST['updateEmail'])) {
                                             <div class="col-md-12">
                                                 <div class="form-group bmd-form-group">
                                                     <label class="bmd-label-floating">Old Password</label>
-                                                    <input type="text" class="form-control" name="oldPassword">
+                                                    <input type="password" class="form-control" name="oldPassword">
                                                 </div>
                                             </div>
                                         </div>
@@ -300,7 +300,7 @@ if (isset($_POST['updateEmail'])) {
                                             <div class="col-md-12">
                                                 <div class="form-group bmd-form-group">
                                                     <label class="bmd-label-floating">New Password</label>
-                                                    <input type="text" class="form-control" name="newPassword">
+                                                    <input type="password" class="form-control" name="newPassword">
                                                 </div>
                                             </div>
                                         </div>
@@ -308,7 +308,7 @@ if (isset($_POST['updateEmail'])) {
                                             <div class="col-md-12">
                                                 <div class="form-group bmd-form-group">
                                                     <label class="bmd-label-floating">Confirm Password</label>
-                                                    <input type="text" class="form-control" name="conPassword">
+                                                    <input type="password" class="form-control" name="conPassword">
                                                 </div>
                                             </div>
                                         </div>
