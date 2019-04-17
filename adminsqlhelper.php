@@ -119,7 +119,6 @@ function bdtOrUsbByGTName($data){
         case "DBBL Rocket":
             $currency = " BDT";
             return $currency;
-            return ;
             break;
         case "Coinbase":
             $currency = " USD";
