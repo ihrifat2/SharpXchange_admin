@@ -51,7 +51,7 @@ if (empty($username) || empty($tstmn_txt) || empty($status)) {
 if (isset($_POST['updateTstmnBtn'])) {
 
     $status     = checkToken( $_REQUEST[ 'csrf_token' ], $_SESSION[ 'session_token' ]);
-    $viewTstmn      = $_POST['updateTstmnView'];
+    $viewTstmn  = $_POST['updateTstmnView'];
     
     if (!$status) {
         echo '<div id="snackbar">CSRF FAILED!</div>';
