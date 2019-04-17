@@ -101,6 +101,14 @@ function matchPassword($data, $passwd){
     return $check;
 }
 
+function findGateway($data) {
+    if ($data >= 1 && $data <= 7) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function bdtOrUsbByGTName($data){
     $currency;
     switch ($data) {
