@@ -187,7 +187,7 @@ if (isset($_GET['notifyid'])) {
                                                 // Pagination End
 
                                                 $gwInfodata = array();
-                                                $gwInfoquery = "SELECT `exchange_id`, `gateway_sell`, `gateway_recieve`, `amount_sell`, `phone_number`, `gateway_info_address`, `status`, `date` FROM {$statement} ORDER BY `exchange_id` DESC LIMIT {$startpoint} , {$limit}";
+                                                $gwInfoquery = "SELECT `exchange_id`, `gateway_sell`, `gateway_recieve`, `amount_sell`, `phone_number`, `gateway_info_address`, `status`, `create` FROM {$statement} ORDER BY `exchange_id` DESC LIMIT {$startpoint} , {$limit}";
                                                 $gwInforesult = $dbconnect->query($gwInfoquery);
                                                 if ($gwInforesult) {
                                                     while ($gwInforows = $gwInforesult->fetch_array(MYSQLI_ASSOC)) {
@@ -204,7 +204,7 @@ if (isset($_GET['notifyid'])) {
                                                             <td>' . $gwInfoRow['phone_number'] . '</td>
                                                             <td>' . $gwInfoRow['gateway_info_address'] . '</td>
                                                             <td>' . getbadgefromStatus($gwInfoRow['status']) . '</td>
-                                                            <td>' . getDateFormat($gwInfoRow['date']) . '</td>
+                                                            <td>' . getDateFormat($gwInfoRow['create']) . '</td>
                                                             <td><a class="btnn btn-outline-sxc" href="explore.php?exid='.encode($gwInfoRow['exchange_id']).'"><i class="fa fa-pencil"></i></a></td>
                                                         </tr>
                                                     ';
@@ -246,22 +246,3 @@ if (isset($_GET['notifyid'])) {
     <script src="assets/js/bootstrap-notify.js"></script>
 </body>
 </html>
-<?php
-
-
-$dt     = new DateTime('now', new DateTimezone('Asia/Dhaka'));
-$time   = $dt->format('F j, Y, l g:i a');
-
-if (isset($_POST['UpdateGwaBtn'])) {
-    $UpdateGateway  = $_POST['UpdateGateway'];
-    $UpdateAddress  = $_POST['UpdateAddress'];
-    $sqlQuery       = "UPDATE `tbl_gateway_info` SET `gateway_address`='$UpdateAddress',`username`='$username',`date`='$time' WHERE `gateway_id` = '$UpdateGateway'";
-    $result         = mysqli_query($dbconnect, $sqlQuery);
-    if ($result) {
-        echo '<div id="snackbar">Reserve Address Updated.</div>';
-        echo "<script>snackbarMessage()</script>";
-    } else {
-        echo '<div id="snackbar">Failed To Update Reserve Address.</div>';
-        echo "<script>snackbarMessage()</script>";
-    }
-}
