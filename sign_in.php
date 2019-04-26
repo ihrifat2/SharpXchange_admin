@@ -15,10 +15,16 @@
 session_start();
 require 'xsrf.php';
 require "dbconnect.php";
+require "helpertwo.php";
 
 if (isset($_SESSION['admin_login_session'])) {
 	header("Location: index.php");
-    // echo "<script>javascript:document.location='/admin/sign_in.php'</script>";
+}
+
+if (isset($_SESSION['badIP'])) {
+    header("HTTP/1.1 401 Unauthorized");
+    header("Location: block.php");
+    die();
 }
 
 function validate_input($data) {
@@ -29,11 +35,6 @@ function validate_input($data) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSub'])) {
-
-
-    // echo "Csrf: " . tokenField() . "<br>";
-    // echo "Auth1: " . $_REQUEST[ 'csrf_token' ] . "<br>";
-    // echo "Auth2: " . $_SESSION[ 'session_token' ] . "<br>";
 
     $status     = checkToken( $_REQUEST[ 'csrf_token' ], $_SESSION[ 'session_token' ]);
     $uname 		= validate_input($_POST['uname']);
@@ -53,11 +54,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnSub'])) {
             $check          = password_verify($paswd, $store_password);
 
             if ($check) {
-                $_SESSION['admin_login_session'] = $uname;
-                echo "<script>javascript:document.location='index.php'</script>";
+                unset($_SESSION['failattempts']);
+                unset($_SESSION['badIP']);
+                $md5uniqid  = md5(uniqid());
+                $dt         = new DateTime('now', new DateTimezone('Asia/Dhaka'));
+                $time       = $dt->format('F j, Y, l g:i a');
+                
+                $sqlSession = "INSERT INTO `tbl_admin_sessiontoken`(`session_id`, `session_token`, `session_uname`, `session_create`) VALUES (NULL,'$md5uniqid','$uname','$time')";
+                $rstSession = mysqli_query($dbconnect, $sqlSession);
+                if ($rstSession) {
+                    $_SESSION['admin_login_session'] = $uname;
+                    echo "<script>javascript:document.location='index.php'</script>";
+                } else {
+                    echo '<div id="snackbar">Unexpected Error.</div>';
+                    echo "<script>snackbarMessage()</script>";
+                }
             }else{
                 echo '<div id="snackbar">Username or Password Invalid.</div>';
                 echo "<script>snackbarMessage()</script>";
+                $ip = get_ip_address();
+                if (isset($_SESSION['failattempts'])) {
+                    $failattempt = $_SESSION['failattempts'];
+                    $failattempt++;
+                    $_SESSION['failattempts'] = $failattempt;
+                    if ($_SESSION['failattempts'] >= 6) {
+                        $error = "Too many request.";
+                        header("HTTP/1.1 429 Too Many Requests");
+                    }
+                    /* Rate limiting user request */
+                    if ($_SESSION['failattempts'] >= 10) {
+                        $_SESSION['badIP'] = $ip;
+                        header("HTTP/1.1 401 Unauthorized");
+                    }
+                }else{
+                    $failattempt = 1;
+                    $_SESSION['failattempts'] = $failattempt;
+                }
             }
         }
     }
