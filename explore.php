@@ -55,8 +55,6 @@ if ($addinfo == NULL || $addinfo == "") {
     $addinfo = "N/A";
 }
 
-echo "exid : " . $exid;
-
 if (isset($_POST['btn_update'])) {
 
     $csrfToken     = checkToken( $_REQUEST[ 'csrf_token' ], $_SESSION[ 'session_token' ]);
