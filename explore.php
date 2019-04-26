@@ -31,7 +31,7 @@ $countUname = $uname[1];
 $exid = $_GET['exid'];
 if (!empty($exid)) {
     $exid = decode($exid);
-    $sqlQuery = "SELECT `gateway_sell`, `gateway_recieve`, `amount_sell`, `amount_recieve`, `email`, `phone_number`, `gateway_info_address`, `transaction_id`, `additional_info`, `status`, `date` FROM `tbl_exchange_info` WHERE `exchange_id` = '$exid'";
+    $sqlQuery = "SELECT `gateway_sell`, `gateway_recieve`, `amount_sell`, `amount_recieve`, `email`, `phone_number`, `gateway_info_address`, `transaction_id`, `additional_info`, `status`, `create` FROM `tbl_exchange_info` WHERE `exchange_id` = '$exid'";
     $result     = mysqli_query($dbconnect, $sqlQuery);
     $rows       = mysqli_fetch_array($result);
     $gt_sell    = $rows['gateway_sell'];
@@ -44,7 +44,7 @@ if (!empty($exid)) {
     $tranid     = $rows['transaction_id'];
     $addinfo    = $rows['additional_info'];
     $status     = $rows['status'];
-    $date       = $rows['date'];
+    $date       = $rows['create'];
 } else {
     echo "<script>javascript:document.location='error.html'</script>";
 }
@@ -55,17 +55,22 @@ if ($addinfo == NULL || $addinfo == "") {
     $addinfo = "N/A";
 }
 
+echo "exid : " . $exid;
+
 if (isset($_POST['btn_update'])) {
 
-    $status     = checkToken( $_REQUEST[ 'csrf_token' ], $_SESSION[ 'session_token' ]);
+    $csrfToken     = checkToken( $_REQUEST[ 'csrf_token' ], $_SESSION[ 'session_token' ]);
     $updateStatus = $_POST['status'];
 
-    if (!$status) {
+    if (!$csrfToken) {
         echo '<div id="snackbar">CSRF FAILED!</div>';
         echo "<script>snackbarMessage()</script>";
     } else {
+        $dt     = new DateTime('now', new DateTimezone('Asia/Dhaka'));
+        $time   = $dt->format('F j, Y, l g:i a');
+        
         if ($updateStatus >= 1 && $updateStatus <= 5) {
-            $sqlQueryUpdate = "UPDATE `tbl_exchange_info` SET `status`= '$updateStatus' WHERE `exchange_id` = '$exid'";
+            $sqlQueryUpdate = "UPDATE `tbl_exchange_info` SET `status`= '$updateStatus',`up_date`='$time' WHERE `exchange_id` = '$exid'";
             $resultUpdate   = mysqli_query($dbconnect, $sqlQueryUpdate);
             if ($resultUpdate) {
                 echo '<div id="snackbar">Exchange info updated.</div>';
@@ -204,7 +209,7 @@ generateSessionToken();
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-header">
-                            <strong>Date : <?php echo $date; ?></strong> 
+                            <strong>Create Date : <?php echo $date; ?></strong> 
                             <span class="float-right"> <strong>Status : </strong> <?php echo getbadgefromStatus($status); ?></span>
                         </div>
                         <div class="card-body">
