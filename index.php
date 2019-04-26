@@ -1,3 +1,8 @@
+<?php
+
+require "chart.php";
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +17,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"> 
     <link rel="stylesheet" href="assets/css/material-dashboard.min.css"/> 
     <link rel="stylesheet" href="assets/css/sxcadmin.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <script src="assets/js/jquery-3.3.1.min.js"></script>
+    <script src="assets/js/chartist.min.js"></script>
     <script src="assets/js/sxcdashboard.js"></script>
     <script src="assets/js/sxcadmin.js"></script>
     <style type="text/css">
@@ -23,7 +30,7 @@
     </style>
     <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
     <script>
-    Pusher.logToConsole = true;
+    Pusher.logToConsole = false;
 
     var pusher = new Pusher('c0d39fd7bd9c14eb2b6a', {
         cluster: 'ap2',
@@ -254,13 +261,13 @@ generateSessionToken();
                         <div class="col-xl-4 col-lg-12">
                             <div class="card card-chart">
                                 <div class="card-header card-header-success">
-                                    <div class="ct-chart" id="dailySalesChart"></div>
+                                    <div class="ct-chart" id="dailySellChart"></div>
                                 </div>
                                 <div class="card-body">
                                     <h4 class="card-title">Daily Sales</h4>
                                     <p class="card-category">
                                         <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span>
-                                        increase in today sales.
+                                        Based on last 7 days.
                                     </p>
                                 </div>
                                 <div class="card-footer">
@@ -293,11 +300,11 @@ generateSessionToken();
                                 </div>
                                 <div class="card-body">
                                     <h4 class="card-title">Completed Tasks</h4>
-                                    <p class="card-category">Last Campaign Performance</p>
+                                    <p class="card-category">Based on last 7 days</p>
                                 </div>
                                 <div class="card-footer">
                                     <div class="stats">
-                                        <i class="material-icons">access_time</i> campaign sent 2 days ago
+                                        <i class="material-icons">access_time</i> updated 4 minutes ago
                                     </div>
                                 </div>
                             </div>
@@ -315,8 +322,7 @@ generateSessionToken();
                                 </div>
                                 <div class="card-footer">
                                     <div class="stats">
-                                        <i class="material-icons text-warning">warning</i>
-                                        <a href="#pablo" class="warning-link">Get More Space...</a>
+                                        <i class="material-icons text-warning">warning</i>Get More Space...
                                     </div>
                                 </div>
                             </div>
@@ -412,7 +418,7 @@ generateSessionToken();
                                                                     <td>' . $adminExchngRow['amount_recieve'] . '</td>
                                                                     <td>' . $adminExchngRow['gateway_info_address'] . '</td>
                                                                     <td>' . $adminExchngRow['status'] . '</td>
-                                                                    <td><a class="btn btn-danger" href="explore.php?exid='.$adminExchngRow['exchange_id'].'">explore</a></td>
+                                                                    <td><a class="btn btn-danger" href="explore.php?exid='.encode($adminExchngRow['exchange_id']).'">explore</a></td>
                                                                 </tr>
                                                             ';
                                                         }
@@ -565,10 +571,34 @@ generateSessionToken();
     <script src="https://unpkg.com/default-passive-events"></script>
     <script src="assets/js/perfect-scrollbar.jquery.min.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="assets/js/chartist.min.js"></script>
     <script src="assets/js/material-dashboard.js?v=2.1.0"></script>
     <script src="assets/js/bootstrap-notify.js"></script>
-    <script src="assets/js/sxcdashboard.js"></script>
-    <script src="assets/js/sxcadmin.js"></script>
+    <script type="text/javascript">
+
+        new Chartist.Line('#dailySellChart', {
+            labels: <?php echo json_encode($cTWeakName); ?>,
+            series: [
+                <?php echo json_encode($dailySell); ?>
+            ]
+        }, {
+            fullWidth: true,
+            chartPadding: {
+                right: 40
+            }
+        });
+
+        new Chartist.Bar('#completedTasksChart', {
+            labels: <?php echo json_encode($cTWeakName); ?>,
+            series: [
+                <?php echo json_encode($cTWeaklyEx); ?>
+            ]
+        }, {
+            fullWidth: true,
+            chartPadding: {
+                right: 40
+            }
+        });
+
+    </script>
 </body>
 </html>
